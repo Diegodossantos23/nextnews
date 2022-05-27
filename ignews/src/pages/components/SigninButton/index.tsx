@@ -1,5 +1,5 @@
 import styles from './styles.module.scss';
-import {FiX} from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
 
 import { FaGithub } from 'react-icons/fa';
 
