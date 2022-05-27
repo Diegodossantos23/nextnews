@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 
 import Head from 'next/head';
 
@@ -9,6 +9,11 @@ import { SubscribeButton } from './components/SubscribeButton/index';
 
 import styles from './home.module.scss';
 
+/* 3 ways to populate a page */
+
+// Client-side rendering
+// Server-side rendering
+// Static Site Generation
 interface HomeProps {
   product: {
     priceId: string,
@@ -30,7 +35,7 @@ const Home: React.FC = ({ product }: HomeProps) => {
             <h1>News about the <span>React</span> world.</h1>
             <p>
               Get access to all the publications <br/>
-              <span>$for {product.amount} month</span>
+              <span>for {product.amount} month</span>
             </p>
             <SubscribeButton priceId={product.priceId} />
           </section>
@@ -43,7 +48,7 @@ const Home: React.FC = ({ product }: HomeProps) => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const price = await stripe.prices.retrieve('price_1L48tLF6zrcwSKc8OlIoTOVb', {
     expand: ['product']
   })
@@ -59,7 +64,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
       product,
-    }
+    },
+    revalidate: 60 * 60 + 24, // 24 hours
   }
   
 }
